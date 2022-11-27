@@ -56,7 +56,8 @@ char string[100],h[1]={'H'},e[1]={'E'},l[1]={'L'},o[1]={'O'},b[1]={'B'},v[1]={'V
 int k1=0;
 char Screen1[27]="                         ";
 char Screen2[27]="                         ";
-
+char Screm1[27]="    SENT!                ";
+char Screm2[27]="        :)               ";
 //char BScreen1[27]="                         ";
 
 int r=1;
@@ -80,11 +81,19 @@ void setup() {
 
 void send()
     {
-      for(int p=0;p<12;p++){if(Screen1[p]=='_')Screen1[p]=' ';senddata.concat(Screen1[p]);}
-      for(int l=0;l<14;l++){if(Screen2[l]=='_')Screen2[l]=' ';senddata.concat(Screen2[l]);}
+      for(int p=0;p<12;p++){if(Screen1[p]=='_')Screen1[p]=' ';senddata.concat(Screen1[p]);Screen1[p]=' ';}
+      for(int l=0;l<14;l++){if(Screen2[l]=='_')Screen2[l]=' ';senddata.concat(Screen2[l]);Screen2[l]=' ';}
       
       SerialBT.println(senddata);
       senddata="";
+
+       lcd.setCursor(3,0);
+       lcd.write(Screm1);
+      delay(300);
+       lcd.setCursor(0,1);
+       lcd.write(Screm2);
+       kx=0;
+      
     }
 
 
@@ -118,7 +127,7 @@ return sirout;
 
 
 }
-void display(char Screen[27])
+/*void display(char Screen[27])
 {
 for (int j=3;j++;j<30)
     { int row;
@@ -137,7 +146,7 @@ for (int j=3;j++;j<30)
 
 
 
-}
+}*/
 void loop() {
   // Read the ADC, and calculate voltage and resistance from it
   int mare = analogRead(flexPin_mare);
@@ -230,16 +239,16 @@ current_down = debounce(last_down, down);   //Debounce for Page Down or Scroll u
     lcd.write("CG:");
 
     if (mare>=3400 && mare<=3500 && aratator>=3600 && mijlociu>=3600 && inelar>=3600 && mic>=3600) {delay(3000);if (kx>11)Screen2[kx-12]=('B'); else Screen1[kx]=('B');kx++;}if (kx>26)s=2;
-    if (mare<=3500 && aratator<=3500 && mijlociu<=3500 && inelar<=3500 && mic<=3500) {delay(1000);if (kx>11)Screen2[kx-12]=('E');else Screen1[kx]=('E');kx++;}if (kx>26)s=2;//lcd.write("E");SerialBT.println("E");delay(1000);i++;lcd.setCursor(i,0);}
+    if (mare<=3400 && aratator<=3500 && mijlociu<=3500 && inelar<=3500 && mic<=3500) {delay(1000);if (kx>11)Screen2[kx-12]=('E');else Screen1[kx]=('E');kx++;}if (kx>26)s=2;//lcd.write("E");SerialBT.println("E");delay(1000);i++;lcd.setCursor(i,0);}
     if (mare>=3550 && aratator>=3550 && mijlociu>=3550 && inelar<=3500 && mic<=3500) {delay(1000);if (kx>11)Screen2[kx-12]=('K');else Screen1[kx]=('K');kx++;}if (kx>26)s=2;//lcd.write("K");SerialBT.println("K");delay(1000);i++;lcd.setCursor(i,0);}
     if (mare>=3500 && aratator>=3550 && mijlociu<=3500 && inelar<=3500 && mic<=3500) {delay(1000);if (kx>11)Screen2[kx-12]=('L');else Screen1[kx]=('L');kx++;}if (kx>26)s=2;//lcd.write("L");SerialBT.println("L");delay(1000);i++;lcd.setCursor(i,0);}
     if (mare<=3500 && aratator>=3550 && mijlociu>=3550 && inelar<=3500 && mic<=3500) {delay(1000);if (kx>11)Screen2[kx-12]=('V');else Screen1[kx]=('V');kx++;}if (kx>26)s=2;//lcd.write("V");SerialBT.println("V");delay(1000);i++;lcd.setCursor(i,0);}
     if (mare<=3500 && aratator>=3550 && mijlociu<=3500 && inelar<=3500 && mic<=3500) {delay(1000);if (kx>11)Screen2[kx-12]=('Z');else Screen1[kx]=('Z');kx++;}if (kx>26)s=2;//lcd.write("Z");SerialBT.println("Z");delay(1000);i++;lcd.setCursor(i,0);}
     if (mare<=3450 && aratator>=3600 && mijlociu>=3600 && inelar<=3500 && mic<=3500) {delay(1000);if (kx>11)Screen2[kx-12]=('H');else Screen1[kx]=('H');kx++;}if (kx>26)s=2;
-    if ((mare>3470 && mare<=3550) && (aratator>3400 && aratator<=3500)) {delay(1000);if (kx>11)Screen2[kx-12]=('O');else Screen1[kx]=('O');kx++;}if (kx>26)s=2;
+    if ((mare>=3500) && ( aratator<=3400) && mijlociu>=3450) {delay(1000);if (kx>11)Screen2[kx-12]=('O');else Screen1[kx]=('O');kx++;}if (kx>26)s=2;
     if (mare<=3500 && aratator<=3600 && aratator>=3450 && mijlociu<=3500 && inelar<=3500 && mic<=3500) {delay(1000);if (kx>11)Screen2[kx-12]=('A');else Screen1[kx]=('A');kx++;}if (kx>26)s=2;
-    if (mare<=3500 && aratator<=3500 && mijlociu<=3500 && inelar<=3500 && mic>=3550) {delay(1000);kx--;if (kx>11)Screen2[kx-12]=(' ');else Screen1[kx]=(' ');}if (kx>26)s=2;//lcd.write("E");SerialBT.println("E");delay(1000);i++;lcd.setCursor(i,0);}
-    if (mare<=3500 && aratator>=3550 && mijlociu<=3500 && inelar<=3500 && mic>=3550) {delay(3500);if (kx>11)Screen2[kx-12]=('_');else Screen1[kx]=('_');kx++;}if (kx>26)s=2;//lcd.write("Z");SerialBT.println("Z");delay(1000);i++;lcd.setCursor(i,0);}
+    if (mare<=3500 && aratator<=3500 && mijlociu<=3500 && inelar<=3500 && mic>=3550 ) {delay(2000);kx--;if (kx>11)Screen2[kx-12]=(' ');else Screen1[kx]=(' ');delay(2000);}if (kx>26)s=2;//lcd.write("E");SerialBT.println("E");delay(1000);i++;lcd.setCursor(i,0);}
+    if (mare<=3500 && aratator>=3550 && mijlociu<=3500 && inelar<=3500 && mic>=3550) {delay (1000);if (kx>11)Screen2[kx-12]=('_');else Screen1[kx]=('_');delay(2450);kx++;}if (kx>26)s=2;//lcd.write("Z");SerialBT.println("Z");delay(1000);i++;lcd.setCursor(i,0);}
     
     if (s==2){kx=0;s=1;}
     //display(Screen1);
