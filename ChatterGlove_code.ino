@@ -57,7 +57,7 @@ int k1=0;
 char Screen1[27]="                         ";
 char Screen2[27]="                         ";
 
-char BScreen1[27]="                         ";
+//char BScreen1[27]="                         ";
 
 int r=1;
 int s=1;
@@ -74,18 +74,14 @@ void setup() {
   pinMode(flexPin_inelar, INPUT);
   pinMode(flexPin_aratator, INPUT);
   pinMode(flexPin_mic, INPUT);
-  /*for(int g=0;g<27;g++)
-  {
-    Screen1[g]=' ';
-    Screen2[g]=' ';
-  }*/
+  
 }
 
 
 void send()
     {
-      for(int p=0;p<12;p++)senddata.concat(Screen1[p]);
-      for(int l=0;l<14;l++)senddata.concat(Screen2[l]); 
+      for(int p=0;p<12;p++){if(Screen1[p]=='_')Screen1[p]=' ';senddata.concat(Screen1[p]);}
+      for(int l=0;l<14;l++){if(Screen2[l]=='_')Screen2[l]=' ';senddata.concat(Screen2[l]);}
       
       SerialBT.println(senddata);
       senddata="";
@@ -151,7 +147,7 @@ void loop() {
   int mic = analogRead(flexPin_mic);
   
  
-
+/*
   k=0;
   while(SerialBT.available()) {      
     char c = SerialBT.read();  //gets one byte from serial buffer (bluetooth module)
@@ -162,7 +158,7 @@ void loop() {
       data2 += c;   // store character into buffer string
       if (c == '\n') { // end of line detected
         lcd.clear(); // clear display
-        lcd.setCursor(0, 0);
+        lcd.setCursor(3, 0);
         lcd.print(data);
            lcd.setCursor(0, 1);
         lcd.print(data2);// show new message on display
@@ -171,7 +167,7 @@ void loop() {
         break;
      }
     }
-  }  
+  }  */
 current_up = debounce(last_up, up);         //Debounce for Page Up or Scroll down button
 current_down = debounce(last_down, down);   //Debounce for Page Down or Scroll upbutton
 
@@ -192,7 +188,7 @@ current_down = debounce(last_down, down);   //Debounce for Page Down or Scroll u
     last_up = current_up;
 
 //TEXT Down or Scroll Up
-  //if ((current_up == HIGH) && (current_down == HIGH)){lcd.setCursor(4, 0);lcd.print("Print Test");}
+  
     if (last_down== LOW && current_down == HIGH){ //When down button is pressed 
       lcd.clear();                     //When page is changed, lcd clear to print new page    
       if(page_counter >1){              //Page counter never lower than 1 (total of pages)
@@ -239,6 +235,12 @@ current_down = debounce(last_down, down);   //Debounce for Page Down or Scroll u
     if (mare>=3500 && aratator>=3550 && mijlociu<=3500 && inelar<=3500 && mic<=3500) {delay(1000);if (kx>11)Screen2[kx-12]=('L');else Screen1[kx]=('L');kx++;}if (kx>26)s=2;//lcd.write("L");SerialBT.println("L");delay(1000);i++;lcd.setCursor(i,0);}
     if (mare<=3500 && aratator>=3550 && mijlociu>=3550 && inelar<=3500 && mic<=3500) {delay(1000);if (kx>11)Screen2[kx-12]=('V');else Screen1[kx]=('V');kx++;}if (kx>26)s=2;//lcd.write("V");SerialBT.println("V");delay(1000);i++;lcd.setCursor(i,0);}
     if (mare<=3500 && aratator>=3550 && mijlociu<=3500 && inelar<=3500 && mic<=3500) {delay(1000);if (kx>11)Screen2[kx-12]=('Z');else Screen1[kx]=('Z');kx++;}if (kx>26)s=2;//lcd.write("Z");SerialBT.println("Z");delay(1000);i++;lcd.setCursor(i,0);}
+    if (mare<=3450 && aratator>=3600 && mijlociu>=3600 && inelar<=3500 && mic<=3500) {delay(1000);if (kx>11)Screen2[kx-12]=('H');else Screen1[kx]=('H');kx++;}if (kx>26)s=2;
+    if ((mare>3470 && mare<=3550) && (aratator>3400 && aratator<=3500)) {delay(1000);if (kx>11)Screen2[kx-12]=('O');else Screen1[kx]=('O');kx++;}if (kx>26)s=2;
+    if (mare<=3500 && aratator<=3600 && aratator>=3450 && mijlociu<=3500 && inelar<=3500 && mic<=3500) {delay(1000);if (kx>11)Screen2[kx-12]=('A');else Screen1[kx]=('A');kx++;}if (kx>26)s=2;
+    if (mare<=3500 && aratator<=3500 && mijlociu<=3500 && inelar<=3500 && mic>=3550) {delay(1000);kx--;if (kx>11)Screen2[kx-12]=(' ');else Screen1[kx]=(' ');}if (kx>26)s=2;//lcd.write("E");SerialBT.println("E");delay(1000);i++;lcd.setCursor(i,0);}
+    if (mare<=3500 && aratator>=3550 && mijlociu<=3500 && inelar<=3500 && mic>=3550) {delay(3500);if (kx>11)Screen2[kx-12]=('_');else Screen1[kx]=('_');kx++;}if (kx>26)s=2;//lcd.write("Z");SerialBT.println("Z");delay(1000);i++;lcd.setCursor(i,0);}
+    
     if (s==2){kx=0;s=1;}
     //display(Screen1);
     lcd.setCursor(3,0);
@@ -255,28 +257,39 @@ current_down = debounce(last_down, down);   //Debounce for Page Down or Scroll u
     lcd.write(byte(2));
     
     }
-    /* lcd.setCursor(0,1);
-    //if (Serial.available()) SerialBT.write(Serial.read());
-    if (SerialBT.available()) Serial.write(SerialBT.read());
-    lcd.setCursor(5,0);
-    for (j=5;j<=14;j++) Serial.println(" ");
-   
-
-     */
+    
      break;
     case 3:{     //Page 3
       lcd.setCursor(0,0);
       lcd.write("AP:");
+      lcd.setCursor(3, 0);
+        lcd.print(data);
+           lcd.setCursor(0, 1);
+        lcd.print(data2);
+  k=0;
+       if(SerialBT.available()){data="";data2="";}
+  while(SerialBT.available()) {      
+    char c = SerialBT.read();  //gets one byte from serial buffer (bluetooth module)
+    if (c != -1) {k++;
+      if(k<12)
+      data += c;
+      else
+      data2 += c;   // store character into buffer string
+      if (c == '\n') { // end of line detected
+        //lcd.clear(); // clear display
+        
+        // show new message on display
+        // clear buffer string
+        break;
+     }
+    }
+  }  
 
 
 
-
-      /*
-      if (mare<=3450 && aratator>=3600 && mijlociu>=3600 && inelar<=3500 && mic<=3500) {lcd.write('H');SerialBT.println("H");delay(1000);string[lungime++]=h[0];}
-      if (mare<=3500 && aratator<=3500 && mijlociu<=3500 && inelar<=3500 && mic<=3500) {lcd.write("E");SerialBT.println("E");delay(1000);string[lungime++]=e[0];}
-      if (mare>=3500 && aratator>=3550 && mijlociu<=3500 && inelar<=3500 && mic<=3500) {lcd.write("L");SerialBT.println("L");delay(1000);string[lungime++]=l[0];}
-      if ((mare>3470 && mare<=3550) && (aratator>3400 && aratator<=3500)) {lcd.write("O");SerialBT.println("O");delay(1000);string[lungime++]=o[0];}*/
-      lcd.setCursor(0,1);
+     
+      
+      lcd.setCursor(3,1);
       if (lungime==5) lcd.print(string);
       lcd.setCursor(15,0);
       lcd.write(byte(1));
